@@ -1,0 +1,163 @@
+---
+title: 'ESM 204 Assignment #4'
+author: "Laura Ingulsrud & Tess Hooper"
+date: "5/28/2019"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r packages, include=FALSE}
+
+# Load necessary packages
+library(tidyverse)
+library(gridExtra)
+
+```
+
+```{r data, include=FALSE}
+
+# Load in data set: marginal cost of carbon abatement for four economic sectors
+carbondata <- read_csv("HW4Data.csv")
+
+# Data columns are: 
+  # (1) “Abatement”: amount of carbon abatement (tons)
+  # (2) “MC_A”: marginal cost of carbon abatement for Sector A ($/ton)
+  # (3) “MC_B”: marginal cost of carbon abatement for Sector B ($/ton)
+  # (4) “MC_C”: marginal cost of carbon abatement for Sector C ($/ton)
+  # (5) “MC_D”: marginal cost of carbon abatement for Sector D ($/ton)
+
+```
+
+##**Technical Appendix**<br>
+
+
+###1. 
+```{r #1}
+
+# 1. Write down a plausible functional form for the marginal cost of abatement for sector A. Use regression analysis to estimate the parameters of that function. Repeating this for sectors B, C, and D will give you a model of the marginal cost of abatement function for each sector.How well do your models fit the data for each sector? You may need to experiment with different functional forms. 
+
+# Do a linear regression through the data for sector A
+A_lm <- lm(MC_A ~ Abatement, data = carbondata)
+summary(A_lm)
+  # intercept = -8.64448
+  # Abatement (slope) = 0.57684
+  # R^2 = 0.904 (fits really well!)
+
+# Assign coefficients for sector A
+A_intercept <- A_lm$coefficients[1]
+A_abatement <- A_lm$coefficients[2]
+
+# Create function for sector A
+A <- function(x){A_intercept + A_abatement*x}
+
+
+# Do a linear regression through the data for sector B
+B_lm <- lm(MC_B ~ Abatement, data = carbondata)
+summary(B_lm)
+  # intercept = 9.31770
+  # Abatement (slope) = 0.19874
+  # R^2 = 0.5355 (fits meh)
+
+# Assign coefficients for sector B
+B_intercept <- B_lm$coefficients[1]
+B_abatement <- B_lm$coefficients[2]
+
+# Create function for sector B
+B <- function(x){B_intercept + B_abatement*x}
+
+
+# Do a linear regression through the data for sector C
+C_lm <- lm(MC_C ~ Abatement, data = carbondata)
+summary(C_lm)
+  # intercept = -11.65503
+  # Abatement (slope) = 0.78383
+  # R^2 = 0.8663 (fits pretty well)
+
+# Assign coefficients for sector C
+C_intercept <- C_lm$coefficients[1]
+C_abatement <- C_lm$coefficients[2]
+
+# Create function for sector C
+C <- function(x){C_intercept + C_abatement*x}
+
+
+# Do a linear regression through the data for sector D
+D_lm <- lm(MC_D ~ Abatement, data = carbondata)
+summary(D_lm)
+  # intercept = 9.68751
+  # Abatement (slope) = 0.25993
+  # R^2 = 0.5108 (fits meh; the worst of the 4)
+
+# Assign coefficients for sector D
+D_intercept <- D_lm$coefficients[1]
+D_abatement <- D_lm$coefficients[2]
+
+# Create function for sector D
+D <- function(x){D_intercept + D_abatement*x}
+
+
+# Produce a plot of the estimated marginal abatement cost functions in all four sectors (this plot should go in your memo).
+
+
+#look at grid.arrange (in the gridExtra package) to facet_wrap
+
+```
+
+###2. 
+```{r #2}
+
+
+
+```
+
+###3a. 
+```{r #3a}
+
+
+
+```
+
+###3b. 
+```{r #3b}
+
+
+
+```
+
+###3c. 
+```{r #3c}
+
+
+
+```
+
+###4. 
+```{r #4}
+
+
+
+```
+
+###5a. 
+```{r #5a}
+
+
+
+```
+
+###5b. 
+```{r #5b}
+
+
+
+```
+
+###5c. 
+```{r #5c}
+
+
+
+```
