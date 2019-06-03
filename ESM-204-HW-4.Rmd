@@ -102,6 +102,18 @@ D_abatement <- D_lm$coefficients[2]
 # Create function for sector D
 D <- function(x){D_intercept + D_abatement*x}
 
+
+## Trying trial graph for D to see if it's linear or quadratic
+
+trial_d <- ggplot(carbondata, aes(x=Abatement, y=MC_D)) +
+  geom_point() +
+  geom_smooth()
+
+trial_d ## Could be quadratic?? Should we do a quadratic function? 
+
+
+
+
 #####################################################################################
 
 
@@ -116,15 +128,195 @@ D <- function(x){D_intercept + D_abatement*x}
 
 ```
 
+$Marginal~Cost~Of~Abatement~Sector~A = `r A_abatement` *Quantity + `r A_intercept`$
+
+$Marginal~Cost~Of~Abatement~Sector~B = `r B_abatement` *Quantity + `r B_intercept`$
+
+$Marginal~Cost~Of~Abatement~Sector~C = `r C_abatement` *Quantity + `r C_intercept`$
+
+$Marginal~Cost~Of~Abatement~Sector~D = `r D_abatement` *Quantity + `r D_intercept`$
+
+
+
 <br>
 
-###2. Demand Curves for Carbon Emissions (Sectors A, B, C, and D)
-```{r #2}
 
-# Using these models and the current level of carbon emissions, derive each sector’s demand curve for carbon emissions. In other words, how much would each sector be willing to pay for the right to pollute the first unit, second unit, etc? Draw these demand curves on a graph. Which sector is willing to pay the most for the first unit of carbon emissions? 
+###2. Demand Curves for Carbon Emissions (Sectors A, B, C, and D)
+
+## Sector A:
+```{r #2 Sector A, echo = FALSE}
+
+#### Using these models and the current level of carbon emissions, derive each sector’s demand curve for carbon emissions. In other words, how much would each sector be willing to pay for the right to pollute the first unit, second unit, etc? Draw these demand curves on a graph. Which sector is willing to pay the most for the first unit of carbon emissions? 
+
+#########################################################################
+
+#### SECTOR A WILLINGNESS TO PAY
+
+# Current emissions are 180 - use quantities from 0 to 180 by 10
+
+quantity_a <- seq(0,180,by=10)
+
+
+# Write function for demand curve for Sector A
+demand_A <- function(q){
+  (A_abatement*(180-q)) + A_intercept
+}
+
+demand_A
+
+
+# Derive demand curve using the values above
+d_curve_A <- demand_A(quantity_a)
+
+
+
+# Graph the demand curve
+curve(demand_A, from=0, to=180, xlab = "Carbon Emissions (tons)", ylab = "$/Ton")
+
+
+### Plug in 0 to the function to calculate how much Sector A is willing to pay to emit the first unit of Carbon
+
+WTP_A <- (A_abatement*(180-0) + A_intercept)
+
+# Sector A is willing to pay 95.20 for the first ton of emissions 
 
 
 ```
+
+$Price~of~Emissions = `r A_abatement`*(180-Quantity) + `r A_intercept`$  
+ - Willingness to Pay for First Unit = \$95.20 
+ 
+ <br>
+ 
+## Sector B:
+```{r Sector B, echo = FALSE}
+
+### SECTOR B WILLINGNESS TO PAY
+
+
+# Current emissions are 200 - use quantities from 0 to 200 by 10
+
+quantity_b <- seq(0,200,by=10)
+
+
+# Write function for demand curve for Sector A
+demand_B <- function(q){
+  (B_abatement*(200-q)) + B_intercept
+}
+
+demand_B
+
+
+# Derive demand curve using the values above
+d_curve_B <- demand_B(quantity_b)
+
+
+
+# Graph the demand curve
+curve(demand_B, from=0, to=200, xlab = "Carbon Emissions (tons)", ylab = "$/Ton")
+
+
+### Plug in 0 to the function to calculate how much Sector A is willing to pay to emit the first unit of Carbon
+
+WTP_B <- (B_abatement*(200-0) + B_intercept)
+
+# Sector B is willing to pay 49.10 for the first ton of emissions 
+
+```
+ 
+$Price~of~Emissions = `r B_abatement`*(200-Quantity) + `r B_intercept`$  
+ - Willingness to Pay for First Unit = \$49.10 
+
+<br>
+
+
+## Sector C:
+```{r, Sector C, echo = FALSE}
+
+### SECTOR C WILLINGNESS TO PAY
+
+
+# Current emissions are 220 - use quantities from 0 to 220 by 10
+
+quantity_c <- seq(0,220,by=10)
+
+
+# Write function for demand curve for Sector A
+demand_C <- function(q){
+  (C_abatement*(220-q)) + C_intercept
+}
+
+demand_C
+
+
+# Derive demand curve using the values above
+d_curve_C <- demand_C(quantity_c)
+
+
+
+# Graph the demand curve
+curve(demand_C, from=0, to=220, xlab = "Carbon Emissions (tons)", ylab = "$/Ton")
+
+
+### Plug in 0 to the function to calculate how much Sector A is willing to pay to emit the first unit of Carbon
+
+WTP_C <- (C_abatement*(220-0) + C_intercept)
+
+# Sector C is willing to pay 161.00 for the first ton of emissions   **** CHECK VALUES --- ROUNDING IS OFF?
+
+```
+
+$Price~of~Emissions = `r C_abatement`*(220-Quantity) + `r C_intercept`$  
+ - Willingness to Pay for First Unit = \$161.10 
+ 
+ <br>
+ 
+ ## Sector D:
+```{r Sector D, echo = FALSE}
+
+
+### SECTOR D WILLINGNESS TO PAY
+
+# Current emissions are 300 - use quantities from 0 to 300 by 10
+
+quantity_d <- seq(0,300,by=10)
+
+
+# Write function for demand curve for Sector A
+demand_D <- function(q){
+  (D_abatement*(300-q)) + D_intercept
+}
+
+demand_D
+
+
+# Derive demand curve using the values above
+d_curve_D <- demand_D(quantity_d)
+
+
+
+# Graph the demand curve
+curve(demand_D, from=0, to=300, xlab = "Carbon Emissions (tons)", ylab = "$/Ton")
+
+
+### Plug in 0 to the function to calculate how much Sector A is willing to pay to emit the first unit of Carbon
+
+WTP_D <- (D_abatement*(300-0) + D_intercept)
+
+# Sector D is willing to pay 87.70 for the first ton of emissions   **** CHECK VALUES --- ROUNDING IS OFF? 
+
+### WTP will be very different if we use quadratic function ****
+
+
+
+```
+ 
+$Price~of~Emissions = `r D_abatement`*(300-Quantity) + `r D_intercept`$  
+ - Willingness to Pay for First Unit = \$87.70 
+ 
+ <br>
+ <br>
+ 
 
 ###3a. Cap on Carbon Emissions per Sector (A, B, C only)
 ```{r #3a}
