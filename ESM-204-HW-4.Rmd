@@ -2,7 +2,9 @@
 title: 'ESM 204 Assignment #4'
 author: "Laura Ingulsrud & Tess Hooper"
 date: "5/28/2019"
-output: html_document
+output:
+  word_document: default
+  html_document: default
 ---
 
 ```{r setup, include=FALSE}
@@ -34,7 +36,7 @@ carbondata <- read_csv("HW4Data.csv")
 
 
 ###1. Estimated Marginal Cost Functions for Sectors A, B, C, and D. 
-```{r #1}
+```{r #1, echo = FALSE, include = TRUE}
 
 # 1. Write down a plausible functional form for the marginal cost of abatement for sector A. Use regression analysis to estimate the parameters of that function. Repeating this for sectors B, C, and D will give you a model of the marginal cost of abatement function for each sector.How well do your models fit the data for each sector? You may need to experiment with different functional forms. 
 
