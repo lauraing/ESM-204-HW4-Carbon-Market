@@ -13,7 +13,6 @@ knitr::opts_chunk$set(echo = TRUE)
 
 # Load necessary packages
 library(tidyverse)
-library(gridExtra)
 
 ```
 
@@ -103,28 +102,42 @@ D_abatement <- D_lm$coefficients[2]
 D <- function(x){D_intercept + D_abatement*x}
 
 
-## Trying trial graph for D to see if it's linear or quadratic
-
+# Trying trial graph for D to see if it's linear or quadratic
 trial_d <- ggplot(carbondata, aes(x=Abatement, y=MC_D)) +
   geom_point() +
   geom_smooth()
 
-trial_d ## Could be quadratic?? Should we do a quadratic function? 
+trial_d # Could be quadratic?? Should we do a quadratic function? 
 
-
+# Keep with linear!
 
 
 #####################################################################################
-
 
 # Produce a plot of the estimated marginal abatement cost functions in all four sectors (this plot should go in your memo).
 
+plot_allsectors <- ggplot(data.frame(x = c(0,350)), aes(x = x)) + 
+    stat_function(fun = A, geom ="line", aes(color = "A")) + 
+    stat_function(fun = B, geom ="line", aes(color = "B")) +
+    stat_function(fun = C, geom ="line", aes(color = "C")) +
+    stat_function(fun = D, geom ="line", aes(color = "D"))+
+    labs(x = "Abatement", y = "Price")+
+    scale_x_continuous(limits =c(0,350), expand = c(0,0))+
+    scale_y_continuous(limits=c(-15,120), expand=c(0,0)) +
+    labs(fill = "", color = "Sectors") + # Changes the legend title
+    xlab("\n Abatement (tons of Carbon)") + 
+    ylab("Abatement Cost \n($/ton of Carbon) \n") +
+    ggtitle("Estimated Marginal Abatement Cost for Four Economic Sectors\n") +
+    theme_bw() +
+    theme(plot.title = element_text(hjust = 0.5, face = "bold"),
+        panel.grid.major = element_blank(),
+        panel.grid.minor = element_blank(),
+        panel.background = element_blank(),
+        axis.line = element_line(colour = "black"))
 
+plot_allsectors
 
 #####################################################################################
-
-
-#look at grid.arrange (in the gridExtra package) to facet_wrap
 
 ```
 
