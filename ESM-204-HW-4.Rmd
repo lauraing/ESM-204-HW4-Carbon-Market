@@ -692,6 +692,10 @@ Total_cost_tax_new <- A_cost_tax_new + B_cost_tax_new + C_cost_tax_new + D_cost_
 Total_cost_tax_new
 # $162908
 
+# Cost of Country X ONLY 
+country_X_cost <- A_cost_tax_new + B_cost_tax_new + C_cost_tax_new 
+country_X_cost
+
 ```
 After Country Y enters Country X's carbon market, Sector D is added to the aggregate demand curve of Sectors A, B, and C. The new optimal price of emitting/marginal cost of abatement ($/ton) with the addition of Sector D is ` \$r round(D_Tax_300, digits=2)`. This is less than the marginal cost of abatement for Country X on its own (` \$r round(Tax_300, digits=2)`).
 
