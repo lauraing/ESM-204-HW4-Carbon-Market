@@ -35,7 +35,7 @@ carbondata <- read_csv("HW4Data.csv")
 ##**Technical Appendix**<br>
 
 
-###1. Estimated Marginal Cost Functions for Sectors A, B, C, and D. 
+###1. Estimated Marginal Cost of Abatement for Sectors A, B, C, and D. 
 ```{r #1, echo = FALSE, include = FALSE}
 
 # 1. Write down a plausible functional form for the marginal cost of abatement for sector A. Use regression analysis to estimate the parameters of that function. Repeating this for sectors B, C, and D will give you a model of the marginal cost of abatement function for each sector.How well do your models fit the data for each sector? You may need to experiment with different functional forms. 
@@ -159,7 +159,7 @@ $Sector~D~Marginal~Cost~Of~Abatement = `r D_abatement` *Quantity + `r D_intercep
 <br>
 
 
-###2. Demand Curves for Carbon Emissions (Sectors A, B, C, and D)
+###2. Demand for Carbon Emissions (Sectors A, B, C, and D)
 
 ## Sector A:
 ```{r #2 Sector A, echo = FALSE}
@@ -383,7 +383,7 @@ abate_A <- function(q){
 }
 # q = quantity abated
 
-# Plug in 100 for q
+# Since each sector must cut its carbon emissions by 100 tons, plug in 100 for q
 cap_A <- abate_A(100) 
 # 49.03971  # marginal cost (which is the derivative of the total; will need to integrate to find the total)
 
@@ -397,7 +397,7 @@ abate_B <- function(q){
   (B_abatement*q) + B_intercept
 }
 
-# Plug in 100 for q
+# Since each sector must cut its carbon emissions by 100 tons, plug in 100 for q
 cap_B <- abate_B(100) 
 # 49.03971  # marginal cost (which is the derivative of the total; will need to integrate to find the total)
 
@@ -411,7 +411,7 @@ abate_C <- function(q){
   (C_abatement*q) + C_intercept
 }
 
-# Plug in 100 for q
+# Since each sector must cut its carbon emissions by 100 tons, plug in 100 for q
 cap_C <- abate_C(100) 
 # 49.03971  # marginal cost (which is the derivative of the total; will need to integrate to find the total)
 
