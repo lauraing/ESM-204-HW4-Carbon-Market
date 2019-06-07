@@ -509,24 +509,24 @@ C_tax_emissions
 ##################### Find cost under optimal tax #####################
 
 # Sector A cost of tax
-A_tax_cost <- integrate(A_supply, 0, A_tax_emissions)$value
+A_tax_cost <- integrate(A_supply, 0, A_tax_emissions)$value + (180 - A_tax_emissions)*Tax_300
 A_tax_cost
-# $1282.612
+# $5093.786
 
 # Sector B cost of tax
-B_tax_cost <- integrate(B_supply, 0, B_tax_emissions)$value
+B_tax_cost <- integrate(B_supply, 0, B_tax_emissions)$value + (200 - B_tax_emissions)*Tax_300
 B_tax_cost
-# $3692.271
+# $5604.635 
 
 # Sector C cost of tax
-C_tax_cost <- integrate(C_supply, 0, C_tax_emissions)$value
+C_tax_cost <- integrate(C_supply, 0, C_tax_emissions)$value + (220 - C_tax_emissions)*Tax_300
 C_tax_cost
-# $904.9294
+# $7009.365
 
 # Total country X cost of tax
 Total_tax_cost <- A_tax_cost + B_tax_cost + C_tax_cost
 Total_tax_cost
-# $5879.812
+# $17707.79
 
 Total_tax_rev <- 300*Tax_300
 Total_tax_rev
