@@ -113,6 +113,9 @@ trial_d # Could be quadratic?? Should we do a quadratic function?
 
 # Keep with linear!
 
+#####################################################################################
+
+# Make stargazer table of coefficients???
 
 #####################################################################################
 
