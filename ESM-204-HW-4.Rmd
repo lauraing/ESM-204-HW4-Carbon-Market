@@ -3,8 +3,8 @@ title: 'ESM 204 Assignment #4'
 author: "Laura Ingulsrud & Tess Hooper"
 date: "5/28/2019"
 output:
-  word_document: default
   html_document: default
+  word_document: default
 ---
 
 ```{r setup, include=FALSE}
@@ -36,11 +36,11 @@ carbondata <- read_csv("HW4Data.csv")
 
 
 ###1. Estimated Marginal Cost Functions for Sectors A, B, C, and D. 
-```{r #1, echo = FALSE, include = TRUE}
+```{r #1, echo = FALSE, include = FALSE}
 
 # 1. Write down a plausible functional form for the marginal cost of abatement for sector A. Use regression analysis to estimate the parameters of that function. Repeating this for sectors B, C, and D will give you a model of the marginal cost of abatement function for each sector.How well do your models fit the data for each sector? You may need to experiment with different functional forms. 
 
-#####################################################################################
+############################# Supply Curve ##############################################
 
 # Do a linear regression through the data for sector A
 A_lm <- lm(MC_A ~ Abatement, data = carbondata)
@@ -54,7 +54,7 @@ A_intercept <- A_lm$coefficients[1]
 A_abatement <- A_lm$coefficients[2]
 
 # Create function for sector A (Intercept + Slope(Abatement) * x)
-A <- function(x){A_intercept + A_abatement*x}
+A_supply <- function(x){A_intercept + A_abatement*x}
 
 #####################################################################################
 # Do a linear regression through the data for sector B
@@ -69,7 +69,7 @@ B_intercept <- B_lm$coefficients[1]
 B_abatement <- B_lm$coefficients[2]
 
 # Create function for sector B
-B <- function(x){B_intercept + B_abatement*x}
+B_supply <- function(x){B_intercept + B_abatement*x}
 
 #####################################################################################
 
@@ -85,7 +85,7 @@ C_intercept <- C_lm$coefficients[1]
 C_abatement <- C_lm$coefficients[2]
 
 # Create function for sector C
-C <- function(x){C_intercept + C_abatement*x}
+C_supply <- function(x){C_intercept + C_abatement*x}
 
 #####################################################################################
 
@@ -101,7 +101,7 @@ D_intercept <- D_lm$coefficients[1]
 D_abatement <- D_lm$coefficients[2]
 
 # Create function for sector D
-D <- function(x){D_intercept + D_abatement*x}
+D_supply <- function(x){D_intercept + D_abatement*x}
 
 
 # Trying trial graph for D to see if it's linear or quadratic
@@ -119,10 +119,10 @@ trial_d # Could be quadratic?? Should we do a quadratic function?
 # Produce a plot of the estimated marginal abatement cost functions in all four sectors (this plot should go in your memo).
 
 plot_allsectors <- ggplot(data.frame(x = c(0,350)), aes(x = x)) + 
-    stat_function(fun = A, geom ="line", aes(color = "A")) + 
-    stat_function(fun = B, geom ="line", aes(color = "B")) +
-    stat_function(fun = C, geom ="line", aes(color = "C")) +
-    stat_function(fun = D, geom ="line", aes(color = "D"))+
+    stat_function(fun = A_supply, geom ="line", aes(color = "A")) + 
+    stat_function(fun = B_supply, geom ="line", aes(color = "B")) +
+    stat_function(fun = C_supply, geom ="line", aes(color = "C")) +
+    stat_function(fun = D_supply, geom ="line", aes(color = "D"))+
     labs(x = "Abatement", y = "Price")+
     scale_x_continuous(limits =c(0,350), expand = c(0,0))+
     scale_y_continuous(limits=c(-15,120), expand=c(0,0)) +
@@ -185,8 +185,8 @@ d_curve_A <- demand_A(quantity_a)
 
 
 
-# Graph the demand curve
-curve(demand_A, from=0, to=180, xlab = "Carbon Emissions (tons)", ylab = "$/Ton")
+# # Graph the demand curve
+# curve(demand_A, from=0, to=180, xlab = "Carbon Emissions (tons)", ylab = "$/Ton")
 
 
 ### Plug in 0 to the function to calculate how much Sector A is willing to pay to emit the first unit of Carbon
@@ -228,8 +228,8 @@ d_curve_B <- demand_B(quantity_b)
 
 
 
-# Graph the demand curve
-curve(demand_B, from=0, to=200, xlab = "Carbon Emissions (tons)", ylab = "$/Ton")
+# # Graph the demand curve
+# curve(demand_B, from=0, to=200, xlab = "Carbon Emissions (tons)", ylab = "$/Ton")
 
 
 ### Plug in 0 to the function to calculate how much Sector A is willing to pay to emit the first unit of Carbon
@@ -271,8 +271,8 @@ d_curve_C <- demand_C(quantity_c)
 
 
 
-# Graph the demand curve
-curve(demand_C, from=0, to=220, xlab = "Carbon Emissions (tons)", ylab = "$/Ton")
+# # Graph the demand curve
+# curve(demand_C, from=0, to=220, xlab = "Carbon Emissions (tons)", ylab = "$/Ton")
 
 
 ### Plug in 0 to the function to calculate how much Sector A is willing to pay to emit the first unit of Carbon
@@ -313,8 +313,8 @@ d_curve_D <- demand_D(quantity_d)
 
 
 
-# Graph the demand curve
-curve(demand_D, from=0, to=300, xlab = "Carbon Emissions (tons)", ylab = "$/Ton")
+# # Graph the demand curve
+# curve(demand_D, from=0, to=300, xlab = "Carbon Emissions (tons)", ylab = "$/Ton")
 
 
 ### Plug in 0 to the function to calculate how much Sector A is willing to pay to emit the first unit of Carbon
@@ -335,7 +335,7 @@ $Price~of~Emissions = `r D_abatement`*(300-Quantity) + `r D_intercept`$
  <br>
 
 ##Plot
-```{r #2 Plot of Demand Curves}
+```{r #2 Plot of Demand Curves, include=FALSE}
 
 # Produce a plot of the estimated marginal abatement cost functions in all four sectors (this plot should go in your memo).
 
@@ -378,6 +378,7 @@ plot_demand
 abate_A <- function(q){
   (A_abatement*q) + A_intercept
 }
+# q = quantity abated
 
 # Plug in 100 for q
 cap_A <- abate_A(100) 
@@ -422,14 +423,14 @@ MCarea_total <- MCarea_A + MCarea_B + MCarea_C
 
 ```
 1. Total Cost of Cap on Carbon to Country X
-$Total~Cost~to~Country~X = `r round(MCarea_total, digits=6)`$   
+$Total~Cost~to~Country~X = \$`r round(MCarea_total, digits=2)`$   
 
-2. Cost/Benefit to Each Sector in Country X  
-$Cost~to~Sector~A = `r round(MCarea_A, digits=6)`$    
+2. Cost to Each Sector in Country X  
+$Cost~to~Sector~A = \$`r round(MCarea_A, digits=2)`$    
 
-$Cost~to~Sector~B = `r round(MCarea_B, digits=6)`$    
+$Cost~to~Sector~B = \$`r round(MCarea_B, digits=2)`$    
 
-$Cost~to~Sector~C = `r round(MCarea_A, digits=6)`$    
+$Cost~to~Sector~C = \$`r round(MCarea_A, digits=2)`$    
 
 3. Tax Revenue Generated for Country X 
 
@@ -463,9 +464,85 @@ C_intercept_q <- (-C_intercept/C_abatement)
 C_slope_q <- (1/C_abatement)
 C_abate_q <- function(p){C_intercept_q + (C_slope_q*p)}
 
-################################### TOTAL ################################### 
+################################### Aggregate Abatement Curve ############################# 
+
+# Find the aggregate intercept
+Agg_intercept_q <- sum(A_intercept_q,B_intercept_q,C_intercept_q)
+
+# Find the aggregate intercept
+Agg_slope_q <- sum(A_slope_q, B_slope_q, C_slope_q)
+
+# Put equations back in terms of p
+Agg_intercept_p <- (-Agg_intercept_q/Agg_slope_q)
+Agg_slope_p <- (1/Agg_slope_q)
+
+# Create aggregate demand curve in terms of p
+Agg_demandcurve_p <- function(x){Agg_intercept_p + Agg_slope_p*x}
+
+# Find the optimal tax with reduction of 300 tons of carbon
+Tax_300 <- Agg_demandcurve_p(300)
+# Optimal tax = $39.42658
+
+# # Add up the equations in terms of q for A, B, and C to get aggregate 
+# Agg_abate_q <- function(p){A_abate_q + B_abate_q + C_abate_q}
+
+##################### Find quantities under optimal tax #####################
+
+# Sector A emissions (q) under optimal tax
+A_tax_emissions <- A_abate_q(Tax_300)
+A_tax_emissions
+# 83.33489
+
+# Sector B emissions (q) under optimal tax
+B_tax_emissions <- B_abate_q(Tax_300)
+B_tax_emissions
+# 151.4956
+
+# Sector C emissions (q) under optimal tax
+C_tax_emissions <- C_abate_q(Tax_300)
+C_tax_emissions
+# 65.16953
+
+##################### Find cost under optimal tax #####################
+
+# Sector A cost of tax
+A_tax_cost <- integrate(A_supply, 0, A_tax_emissions)$value
+A_tax_cost
+# $1282.612
+
+# Sector B cost of tax
+B_tax_cost <- integrate(B_supply, 0, B_tax_emissions)$value
+B_tax_cost
+# $3692.271
+
+# Sector C cost of tax
+C_tax_cost <- integrate(C_supply, 0, C_tax_emissions)$value
+C_tax_cost
+# $904.9294
+
+# Total country X cost of tax
+Total_tax_cost <- A_tax_cost + B_tax_cost + C_tax_cost
+Total_tax_cost
+# $5879.812
+
+Total_tax_rev <- 300*Tax_300
+Total_tax_rev
+# $11827.97
 
 ```
+1. Total Cost of Tax on Carbon to Country X <br>
+$Total~Cost~to~Country~X = \$`r round(Total_tax_cost, digits=2)`$   
+
+2. Cost to Each Sector in Country X <br>
+$Cost~to~Sector~A = \$`r round(A_tax_cost, digits=2)`$    
+
+$Cost~to~Sector~B = \$`r round(B_tax_cost, digits=2)`$    
+
+$Cost~to~Sector~C = \$`r round(C_tax_cost, digits=2)`$    
+
+3. Tax Revenue Generated for Country X <br>
+$Total~Tax~Revenue~for~Country~X = \$`r round(Total_tax_rev, digits=2)`$
+<br>
 
 ###3c. Cap and Trade Outcomes per Sector in Country X (Sectors A, B, C)
 ```{r #3c}
@@ -475,22 +552,142 @@ C_abate_q <- function(p){C_intercept_q + (C_slope_q*p)}
 
 ################################### Sector A ################################### 
 
+# How much sector A will buy
+A_cat <- (180-A_tax_emissions-80)
+A_cat
+# 16.66511  
+
+# Cost of sector A abating 83.3 units and buying 16.67 carbon credits from sector B
+A_cat_cost <- integrate(A_supply, lower = 0, upper = A_tax_emissions)$value + (16.66511*Tax_300)
+A_cat_cost
+# $1939.66
+
 ################################### Sector B ################################### 
+
+# How much sector B will sell
+B_cat <- (200-B_tax_emissions-100)
+B_cat
+# -51.49558 
+
+# Cost of sector B abating 151.5 units and selling 51.5 carbon credits to sectors A and C
+B_cat_cost <- integrate(B_supply, lower = 0, upper = B_tax_emissions)$value - (51.49558*Tax_300)
+B_cat_cost
+# $1661.977
 
 ################################### Sector C ################################### 
 
+# How much sector C will buy
+C_cat <- (220-C_tax_emissions-120)
+C_cat
+# 34.83047
+
+# Cost of sector C abating 65.2 units and buying 34.8 carbon credits from sector B
+C_cat_cost <- integrate(C_supply, lower = 0, upper = C_tax_emissions)$value + (34.83047*Tax_300)
+C_cat_cost
+# $2278.176
+
 ################################### TOTAL ################################### 
 
+# Total cost of cap and trade program
+Total_cat_cost <- A_cat_cost + B_cat_cost + C_cat_cost
+Total_cat_cost
+# $5879.812
 
 ```
+1. Total Cost of Cap and Trade to Country X
+$Total~Cost~to~Country~X = \$`r round(Total_cat_cost, digits=2)`$   
 
+2. Cost to Each Sector in Country X  
+$Cost~to~Sector~A = \$`r round(A_cat_cost, digits=2)`$    
+
+$Cost~to~Sector~B = \$`r round(B_cat_cost, digits=2)`$    
+
+$Cost~to~Sector~C = \$`r round(C_cat_cost, digits=2)`$    
+
+3. Tax Revenue Generated for Country X 
+
+A cap and trade program limits the total amount of carbon emitted but allows trading between sectors. It does not tax emissions, so no tax revenue is generated.
+<br>
 
 ###4. Incentivizing Carbon Market for Country Y
 ```{r #4}
 
 # Again, without any co-benefits, suppose that country Y (which only has one carbon-emitting sector, D) has no obligation to reduce its emissions. Country X asks country Y to enter the country X carbon market. Doing so would require country Y to put a cap on carbon emissions at its current level of emissions (300 tons), but would then allow country Y to sell carbon offsets to sectors A, B, or C. Are there any incentives for country Y to enter country X’s carbon market and to thus place a voluntary cap on its emissions? Are there any incentives for country X to try to attract country Y into its market? 
 
+# Find price for sector D supply curve at quantity 300
+D_price_300 <- D_supply(300)
+D_price_300
+# $87.66577
 
+################################### Sector D ################################### 
+
+# Put equation for sector D in terms of q
+D_intercept_q <- (-D_intercept/D_abatement)
+D_slope_q <- (1/D_abatement)
+D_abate_q <- function(p){D_intercept_q + (D_slope_q*p)}
+
+########################### Aggregate Demand Curve ############################ 
+
+# Find the aggregate intercept
+D_Agg_intercept_q <- sum(A_intercept_q, B_intercept_q, C_intercept_q, D_intercept_q)
+
+# Find the aggregate intercept
+D_Agg_slope_q <- sum(A_slope_q, B_slope_q, C_slope_q, D_slope_q)
+
+# Put equations back in terms of p
+D_Agg_intercept_p <- (-D_Agg_intercept_q/D_Agg_slope_q)
+D_Agg_slope_p <- (1/D_Agg_slope_q)
+
+# Create aggregate demand curve in terms of p
+D_Agg_demandcurve_p <- function(x){D_Agg_intercept_p + D_Agg_slope_p*x}
+
+# Find the optimal tax with reduction of 300 tons of carbon
+D_Tax_300 <- D_Agg_demandcurve_p(300)
+D_Tax_300
+# Optimal tax = $29.80249
+
+# Quantity of emissions sectors abate at the new optimal tax ($29.80)
+A_emissions_tax_new <- (D_Tax_300 - A_intercept)/A_abatement
+A_emissions_tax_new
+# 66.65079 
+
+B_emissions_tax_new <- (D_Tax_300 - B_intercept)/B_abatement
+B_emissions_tax_new
+# 103.0711
+
+C_emissions_tax_new <- (D_Tax_300 - C_intercept)/C_abatement
+C_emissions_tax_new
+# 52.89119
+
+D_emissions_tax_new <- (D_Tax_300 - D_intercept)/D_abatement
+D_emissions_tax_new
+# 77.3869
+
+# Cost of sectors abating at the new optimal tax:
+# Sector A needs to cut by 100, abates 66.65079, so buys the following:
+A_cost_tax_new <- integrate(A_supply, 0, A_emissions_tax_new)$value + ((100-66.65079)*A_cost_tax_new)
+A_cost_tax_new
+# $24219.6
+  
+# Sector B needs to cut by 100, abates 103.0711, so buys the following:
+B_cost_tax_new <- integrate(B_supply, 0, B_emissions_tax_new)$value + ((100-103.0711)*B_cost_tax_new)
+B_cost_tax_new
+# $-4175.505
+
+# Sector C needs to cut by 100, abates 52.89119, so buys the following:
+C_cost_tax_new <- integrate(C_supply, 0, C_emissions_tax_new)$value + ((100-52.89119)*C_cost_tax_new)
+C_cost_tax_new
+# $23088.4
+
+# Sector D needs to cut by 0 (sells all), abates 77.3869, so buys the following:
+D_cost_tax_new <- integrate(D_supply, 0, D_emissions_tax_new)$value + (77.3869*D_cost_tax_new)
+D_cost_tax_new
+# $119775.5
+
+# Cost of country X and Y
+Total_cost_tax_new <- A_cost_tax_new + B_cost_tax_new + C_cost_tax_new + D_cost_tax_new
+Total_cost_tax_new
+# $162908
 
 ```
 
@@ -502,6 +699,12 @@ C_abate_q <- function(p){C_intercept_q + (C_slope_q*p)}
 # A. In a carbon cap and trade market that only covers sectors in country X, how much local air pollution would you expect in country X? In country Y? 
 
 
+X_pollution <- 600 - (A_tax_emissions + B_tax_emissions + C_tax_emissions)
+X_pollution
+# 300 tons
+
+Y_pollution <- 300
+# 300 tons
 
 
 ```
@@ -513,8 +716,13 @@ C_abate_q <- function(p){C_intercept_q + (C_slope_q*p)}
 # B. If country Y enters the carbon market for country X (as in question 4 above), how much local pollution will there be in country X and country Y? 
 
   
+X_pollution_afterY <- 600 - (A_emissions_tax_new + B_emissions_tax_new + C_emissions_tax_new)
+X_pollution_afterY
+# 377.3869 tons
 
-
+Y_pollution_afterY <- 300 - D_emissions_tax_new
+Y_pollution_afterY
+# 222.6131 tons
 
 ```
 
@@ -523,6 +731,5 @@ C_abate_q <- function(p){C_intercept_q + (C_slope_q*p)}
 
 # C. What advice can you give country X and country Y about the desirability of allowing international trade of carbon emissions credits?
 
-
-
 ```
+By doing cap and trade, net emissions across the two countries stay the same, but pollution will be reduced in Country Y, and pollution will increase in Country X, because Sectors A and C will buy carbon credits from Sector D.
