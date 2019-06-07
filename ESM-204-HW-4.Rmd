@@ -693,6 +693,31 @@ Total_cost_tax_new
 # $162908
 
 ```
+After Country Y enters Country X's carbon market, Sector D is added to the aggregate demand curve of Sectors A, B, and C. The new optimal price of emitting/marginal cost of abatement ($/ton) with the addition of Sector D is ` \$r round(D_Tax_300, digits=2)`. This is less than the marginal cost of abatement for Country X on its own (` \$r round(Tax_300, digits=2)`).
+
+After finding the new optimal emissions quantity for each sector based on this new marginal cost of abatement, and the new cost of abatement for each sector, the new total cost of abatement of 300 tons for Country X and Y combined is ` \$r round(Total_cost_tax_new, digits=2)`.
+
+
+Also, total cost of international cap and trade to Country X is calculated as $`r round(costagg_xy_tox, digits=2)`, whereas total cost to Country Y is `r round(costd_xy, digits=2)`.
+
+Incentives for Country Y to enter the carbon market:  
+
+The total cost of entering the market is negative for Country Y. It is cheaper for Sector D to reduce their emissions and the sectors in country X are willing to pay more than the cost of sector D.
+
+
+Incentives for Country X to attract Country Y to the carbon market:  
+
+The total cost of cap and trade for Country X gets cheaper as Country Y enters the market. (It was $`r round(costagg_cap, digits=2)` for the cap and trade in only Country X). Sector D can reduce their emission cheaper than the sectors in Country X. So, sectors in Country X will pay less to Country Y than the price it would normally cost to them to reduce emissions.
+
+
+
+ The total cost of country X is $`r round(total_costs_x_ABCD, digits = 2)` and the total cost for country Y is \$`r round(total_costs_y_ABCD, digits = 2)`. Because Y is negative, they have benefits to gain from entering the cap and trade program with country X.
+ 
+A will buy `r round(A_trans_XY, digits = 2)` with a final abatement of `r round(A_trade_nc_XY, digits = 2)` 
+B will sell `r round(B_trans_XY, digits = 2)` with a final abatement of `r round(B_trade_nc_XY, digits = 2)`
+C will buy `r round(C_trans_XY, digits = 2)` with a final abatement of `r round(C_trade_nc_XY, digits = 2)`
+D will sell `r round(D_trans_XY, digits = 2)`with a final abatement of `r round(D_trade_nc_XY, digits = 2)`
+
 
 ###5a. Country X Only Carbon Market: Amount of Expected Local Air Pollution in Country X and Country Y 
 ```{r #5a}
