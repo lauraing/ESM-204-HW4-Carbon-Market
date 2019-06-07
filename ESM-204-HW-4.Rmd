@@ -668,60 +668,40 @@ D_emissions_tax_new
 
 # Cost of sectors abating at the new optimal tax:
 # Sector A needs to cut by 100, abates 66.65079, so buys the following:
-A_cost_tax_new <- integrate(A_supply, 0, A_emissions_tax_new)$value + ((100-66.65079)*A_cost_tax_new)
+A_cost_tax_new <- integrate(A_supply, 0, A_emissions_tax_new)$value + ((100-66.65079)*D_Tax_300)
 A_cost_tax_new
-# $24219.6
+# $1698.989
   
 # Sector B needs to cut by 100, abates 103.0711, so buys the following:
-B_cost_tax_new <- integrate(B_supply, 0, B_emissions_tax_new)$value + ((100-103.0711)*B_cost_tax_new)
+B_cost_tax_new <- integrate(B_supply, 0, B_emissions_tax_new)$value + ((100-103.0711)*D_Tax_300)
 B_cost_tax_new
-# $-4175.505
+# $1924.554
 
 # Sector C needs to cut by 100, abates 52.89119, so buys the following:
-C_cost_tax_new <- integrate(C_supply, 0, C_emissions_tax_new)$value + ((100-52.89119)*C_cost_tax_new)
+C_cost_tax_new <- integrate(C_supply, 0, C_emissions_tax_new)$value + ((100-52.89119)*D_Tax_300)
 C_cost_tax_new
-# $23088.4
+# $1883.88
 
 # Sector D needs to cut by 0 (sells all), abates 77.3869, so buys the following:
-D_cost_tax_new <- integrate(D_supply, 0, D_emissions_tax_new)$value + (77.3869*D_cost_tax_new)
+D_cost_tax_new <- integrate(D_supply, 0, D_emissions_tax_new)$value - (77.3869*D_Tax_300)
 D_cost_tax_new
-# $119775.5
+# $-778.3182
 
 # Cost of country X and Y
 Total_cost_tax_new <- A_cost_tax_new + B_cost_tax_new + C_cost_tax_new + D_cost_tax_new
 Total_cost_tax_new
-# $162908
+# $4729.105
 
 # Cost of Country X ONLY 
 country_X_cost <- A_cost_tax_new + B_cost_tax_new + C_cost_tax_new 
 country_X_cost
+# $5507.424
 
 ```
-After Country Y enters Country X's carbon market, Sector D is added to the aggregate demand curve of Sectors A, B, and C. The new optimal price of emitting/marginal cost of abatement ($/ton) with the addition of Sector D is ` \$r round(D_Tax_300, digits=2)`. This is less than the marginal cost of abatement for Country X on its own (` \$r round(Tax_300, digits=2)`).
+After Country Y enters Country X's carbon market, Sector D is added to the aggregate demand curve of Sectors A, B, and C. The new optimal price of emitting/marginal cost of abatement ($/ton) with the addition of Sector D is \$`r round(D_Tax_300, digits=2)`. This is less than the marginal cost of abatement for Country X on its own (\$`r round(Tax_300, digits=2)`). After finding the new optimal emissions quantity for each sector based on this new marginal cost of abatement, and the new cost of abatement for each sector, the new total cost of abatement of 300 tons for Country X and Y combined is \$`r round(Total_cost_tax_new, digits=2)`.
 
-After finding the new optimal emissions quantity for each sector based on this new marginal cost of abatement, and the new cost of abatement for each sector, the new total cost of abatement of 300 tons for Country X and Y combined is ` \$r round(Total_cost_tax_new, digits=2)`.
-
-
-Also, total cost of international cap and trade to Country X is calculated as $`r round(costagg_xy_tox, digits=2)`, whereas total cost to Country Y is `r round(costd_xy, digits=2)`.
-
-Incentives for Country Y to enter the carbon market:  
-
-The total cost of entering the market is negative for Country Y. It is cheaper for Sector D to reduce their emissions and the sectors in country X are willing to pay more than the cost of sector D.
-
-
-Incentives for Country X to attract Country Y to the carbon market:  
-
-The total cost of cap and trade for Country X gets cheaper as Country Y enters the market. (It was $`r round(costagg_cap, digits=2)` for the cap and trade in only Country X). Sector D can reduce their emission cheaper than the sectors in Country X. So, sectors in Country X will pay less to Country Y than the price it would normally cost to them to reduce emissions.
-
-
-
- The total cost of country X is $`r round(total_costs_x_ABCD, digits = 2)` and the total cost for country Y is \$`r round(total_costs_y_ABCD, digits = 2)`. Because Y is negative, they have benefits to gain from entering the cap and trade program with country X.
- 
-A will buy `r round(A_trans_XY, digits = 2)` with a final abatement of `r round(A_trade_nc_XY, digits = 2)` 
-B will sell `r round(B_trans_XY, digits = 2)` with a final abatement of `r round(B_trade_nc_XY, digits = 2)`
-C will buy `r round(C_trans_XY, digits = 2)` with a final abatement of `r round(C_trade_nc_XY, digits = 2)`
-D will sell `r round(D_trans_XY, digits = 2)`with a final abatement of `r round(D_trade_nc_XY, digits = 2)`
-
+The cost of a cap and trade program to Country X (without Country Y) is \$`r round(country_X_cost, digits=2)`. The cost of a cap and trade program to Country Y is \$`r round(D_cost_tax_new, digits=2)`. Since Country Y has a negative cost of entering the cap and trade program, they are incentivized to join Country X's carbon market, since Country X's sectors will want to buy carbon credits from Country Y. Country X also has an incentive to attract Country Y into its market, because the total cost of their carbon market program decreases once Country Y joins (from \$`r round(country_X_cost, digits=2)` to \$`r round(Total_cost_tax_new, digits=2)`).
+<br>
 
 ###5a. Country X Only Carbon Market: Amount of Expected Local Air Pollution in Country X and Country Y 
 ```{r #5a}
@@ -740,6 +720,7 @@ Y_pollution <- 300
 
 
 ```
+The previous scenarios have not considered any local air pollutant emissions caused by emitting carbon. There are local air pollutants associated with the emission of carbon, which can have economic damages (health and environmental consequences) in the country in which it is emitted. In a carbon cap and trade market that only covers sectors in Country X, we would expect `r round(X_pollution, digits=2)` tons of local air pollutants. In Country Y, we would expect `r round(Y_pollution, digits=2)` tons of local air pollutants. 
 
 ###5b. Country X and Y Carbon Market: Amount of Expected Local Air Pollution in Country X and Country Y 
 ```{r #5b}
@@ -757,6 +738,8 @@ Y_pollution_afterY
 # 222.6131 tons
 
 ```
+In a carbon cap and trade market that covers all sectors in both Country X and Country Y, we would expect `r round(X_pollution_afterY, digits=2)` tons of local air pollutants. In Country Y, we would expect `r round(Y_pollution_afterY, digits=2)` tons of local air pollutants. 
+
 
 ###5c. Desirability of Allowing International Trade of Carbon Emission Credits
 ```{r #5c}
@@ -764,4 +747,4 @@ Y_pollution_afterY
 # C. What advice can you give country X and country Y about the desirability of allowing international trade of carbon emissions credits?
 
 ```
-By doing cap and trade, net emissions across the two countries stay the same, but pollution will be reduced in Country Y, and pollution will increase in Country X, because Sectors A and C will buy carbon credits from Sector D.
+By participating in an international cap and trade program, net emissions/air pollution across the two countries stay the same, but local air pollution will be reduced in Country Y, and local air pollution will increase in Country X, because Sectors A and C will buy carbon credits from Sector D. While an international cap and trade program is economically beneficial to both countries, the environmental impacts and distributional effects are not beneficial to Country X.
