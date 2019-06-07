@@ -384,7 +384,8 @@ abate_A <- function(q){
 # q = quantity abated
 
 # Since each sector must cut its carbon emissions by 100 tons, plug in 100 for q
-cap_A <- abate_A(100) 
+cap_A <- abate_A(100)
+cap_A
 # 49.03971  # marginal cost (which is the derivative of the total; will need to integrate to find the total)
 
 # Integrate to find the area under the marginal cost curve
@@ -399,7 +400,9 @@ abate_B <- function(q){
 
 # Since each sector must cut its carbon emissions by 100 tons, plug in 100 for q
 cap_B <- abate_B(100) 
-# 49.03971  # marginal cost (which is the derivative of the total; will need to integrate to find the total)
+cap_B
+# 29.19213  
+# marginal cost (which is the derivative of the total; will need to integrate to find the total)
 
 # Integrate to find the area under the marginal cost curve
 MCarea_B <- integrate(abate_B, lower = 0, upper = 100)$value
@@ -413,7 +416,9 @@ abate_C <- function(q){
 
 # Since each sector must cut its carbon emissions by 100 tons, plug in 100 for q
 cap_C <- abate_C(100) 
-# 49.03971  # marginal cost (which is the derivative of the total; will need to integrate to find the total)
+cap_C
+# 66.72763 
+# marginal cost (which is the derivative of the total; will need to integrate to find the total)
 
 # Integrate to find the area under the marginal cost curve
 MCarea_C <- integrate(abate_C, lower = 0, upper = 100)$value
